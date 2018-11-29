@@ -51,9 +51,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\MainGame.cs" />
-     <Compile Include="Assets\Scripts\Tetromino.cs" />
-     <Compile Include="Assets\Scripts\TetrominoBuilder.cs" />
+     <Compile Include="Assets\tetris\scripts\GameGrid.cs" />
+     <Compile Include="Assets\tetris\scripts\GameVariables.cs" />
+     <Compile Include="Assets\tetris\scripts\Spawner.cs" />
+     <Compile Include="Assets\tetris\scripts\Tetromino.cs" />
+     <Compile Include="Assets\tetris\scripts\TetrominoBuilder.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
