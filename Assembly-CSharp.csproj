@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\tetris\scripts\GameGrid.cs" />
+     <Compile Include="Assets\tetris\scripts\GameManager.cs" />
      <Compile Include="Assets\tetris\scripts\GameVariables.cs" />
      <Compile Include="Assets\tetris\scripts\Spawner.cs" />
      <Compile Include="Assets\tetris\scripts\Tetromino.cs" />

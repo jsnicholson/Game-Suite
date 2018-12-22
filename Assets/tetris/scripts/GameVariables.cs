@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class GameVariables {
+public class GameVariables : MonoBehaviour {
 
-    public static int gridWidth = 10;
-    public static int gridHeight = 10;
+    public Vector2 gridDimensions = new Vector2(10, 20);
 
+    public KeyCode moveLeft = KeyCode.LeftArrow;
+    public KeyCode moveRight = KeyCode.RightArrow;
+    public KeyCode rotate = KeyCode.UpArrow;
+    public KeyCode drop = KeyCode.DownArrow;
 }
