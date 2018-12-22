@@ -227,6 +227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f302637bad292549b010a60456417e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grid: {fileID: 220959813}
 --- !u!114 &148773436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -989,11 +990,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4777792593444088, guid: 45259afd9f328b746a2ff6b3270ff952, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 2.5
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 4777792593444088, guid: 45259afd9f328b746a2ff6b3270ff952, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 7.5
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4777792593444088, guid: 45259afd9f328b746a2ff6b3270ff952, type: 2}
       propertyPath: m_LocalPosition.z

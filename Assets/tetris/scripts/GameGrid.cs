@@ -47,7 +47,7 @@ public class GameGrid : MonoBehaviour {
         arrGrid[(int) pos.y,  (int) pos.x] = value;
     }
 
-    public static Vector2 ScreenToGrid(Vector2 screenVec) {
+    public static Vector2 WorldToGrid(Vector2 screenVec) {
         return new Vector2(Mathf.Floor(screenVec.x), Mathf.Floor(screenVec.y));
     }
 }

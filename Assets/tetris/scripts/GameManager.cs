@@ -4,5 +4,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
-	
+    public GameGrid grid;
+
 }

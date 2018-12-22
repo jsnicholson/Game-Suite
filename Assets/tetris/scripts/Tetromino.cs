@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class Tetromino : MonoBehaviour {
 
+    private GameManager GAME_MANAGER;
     private GameVariables GAME_VARIABLES;
+    private GameGrid GRID;
+
+    private Vector2 gridPos;
 
     void Start() {
+        GAME_MANAGER = GameObject.FindWithTag("GM").GetComponent<GameManager>();
         GAME_VARIABLES = GameObject.FindWithTag("GM").GetComponent<GameVariables>();
+        GRID = GAME_MANAGER.grid;
     }
 
     void Update() {
@@ -16,11 +22,11 @@ public class Tetromino : MonoBehaviour {
 
     void CheckInput() {
         if (Input.GetKeyDown(GAME_VARIABLES.moveLeft)) {
-            if (PositionIsValid(Vector3.left)) {
+            if (CanMoveInDirection(Vector2.left)) {
                 Move(Vector3.left);
             }    
         } else if (Input.GetKeyDown(GAME_VARIABLES.moveRight)) {
-            if (PositionIsValid(Vector3.right)) {
+            if (CanMoveInDirection(Vector2.right)) {
                 Move(Vector3.right);
             }
         } else if (Input.GetKeyDown(GAME_VARIABLES.rotate)) {
@@ -49,18 +55,31 @@ public class Tetromino : MonoBehaviour {
         return new Vector2(Mathf.Floor(vec.x), Mathf.Floor(vec.y));
     }
 
-    /// <summary>
-    /// check if when transformation pos is applied, the tetromino will be in the grid
-    /// </summary>
-    /// <param name="pos">the position of the parent tetromino</param>
-    /// <returns>returns a bool</returns>
-    private bool PositionIsValid(Vector3 pos) {
+    private string VecToString(Vector2 vec) {
+        return (vec.x + "," + vec.y);
+    }
+
+    private bool CanMoveInDirection(Vector2 direction) {
+        return PositionIsValid((Vector2) this.transform.position + direction);
+    }
+
+    private bool PositionIsValid(Vector2 pos) {
+        Vector2 translation = pos - (Vector2) this.transform.position;
+
         foreach(Transform mino in this.transform) {
-            Vector3 newMinoPos = mino.position + pos;
-            Vector2 gridPos = GameGrid.ScreenToGrid(new Vector2(newMinoPos.x, newMinoPos.y));
-            if (!(newMinoPos.x >= 0 && newMinoPos.x < GAME_VARIABLES.gridDimensions.x && newMinoPos.y >= 0)) {
+            Vector2 newMinoPos = (Vector2) mino.position + translation;
+
+            if (!(InsideBorder(newMinoPos))) {
                 return false;
             }
+        }
+
+        return true;
+    }
+
+    private bool InsideBorder(Vector2 pos) {
+        if (!(pos.x >= GRID.transform.position.x && pos.x < GRID.transform.position.x + GAME_VARIABLES.gridDimensions.x && pos.y >= 0)) {
+            return false;
         }
 
         return true;
