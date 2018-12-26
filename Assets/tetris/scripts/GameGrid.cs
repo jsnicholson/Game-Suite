@@ -39,15 +39,28 @@ public class GameGrid : MonoBehaviour {
         }
     }
 
+    public Vector2 GetDimensions() {
+        return gridDimensions;
+    }
+
     public bool[,] GetGrid() {
         return arrGrid;
+    }
+
+    public bool GetGridAt(Vector2 gridPos) {
+        return arrGrid[(int) gridPos.y, (int) gridPos.x];
     }
 
     public void SetGridAt(Vector2 pos, bool value) {
         arrGrid[(int) pos.y,  (int) pos.x] = value;
     }
 
-    public static Vector2 WorldToGrid(Vector2 screenVec) {
-        return new Vector2(Mathf.Floor(screenVec.x), Mathf.Floor(screenVec.y));
+    public Vector2 FloorVec2(Vector2 vec) {
+        return new Vector2(Mathf.Floor(vec.x), Mathf.Floor(vec.y));
+    }
+
+    public Vector2 WorldToGrid(Vector2 screenVec) {
+        Vector2 relativePos = screenVec + (Vector2)this.transform.position;
+        return FloorVec2(relativePos);
     }
 }

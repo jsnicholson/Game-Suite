@@ -18,4 +18,13 @@ public class Spawner : MonoBehaviour {
     private GameObject tetromino_t;
     [SerializeField]
     private GameObject tetromino_z;
+
+    private GameObject[] tetrominoList;
+
+    void Start() {
+        tetrominoList = new GameObject[] { tetromino_i, tetromino_j , tetromino_l, tetromino_o,
+                                            tetromino_s, tetromino_t, tetromino_z};
+
+        Tetromino tetromino = Instantiate(tetromino_t, new Vector3(2.5f, 3.5f, 0), Quaternion.identity).GetComponent<Tetromino>();
+    }
 }
