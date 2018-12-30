@@ -51,12 +51,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\PaletteSwapLookup.cs" />
+     <Compile Include="Assets\Scripts\PixelBoy.cs" />
      <Compile Include="Assets\tetris\scripts\GameGrid.cs" />
      <Compile Include="Assets\tetris\scripts\GameManager.cs" />
      <Compile Include="Assets\tetris\scripts\GameVariables.cs" />
      <Compile Include="Assets\tetris\scripts\Spawner.cs" />
      <Compile Include="Assets\tetris\scripts\Tetromino.cs" />
      <Compile Include="Assets\tetris\scripts\TetrominoBuilder.cs" />
+     <None Include="Assets\Shaders\PaletteSwapLookup.shader" />
+     <None Include="Assets\Shaders\PaletteSwapMatrix.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

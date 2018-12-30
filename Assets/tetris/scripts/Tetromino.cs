@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Tetromino : MonoBehaviour {
 
@@ -10,10 +11,24 @@ public class Tetromino : MonoBehaviour {
 
     private Vector2[] minoGridPositions;
 
+    private float timeSinceFall = 0;
+    // in seconds
+    private float timeBetweenFalls = 1;
+
+    public Text gridText;
+
     void Start() {
         GAME_MANAGER = GameObject.FindWithTag("GM").GetComponent<GameManager>();
         GAME_VARIABLES = GameObject.FindWithTag("GM").GetComponent<GameVariables>();
         GRID = GAME_MANAGER.grid;
+        gridText = GameObject.Find("Text").GetComponent<Text>();
+
+        minoGridPositions = new Vector2[this.transform.childCount];
+        for(int i = 0; i < minoGridPositions.Length; i++) {
+            minoGridPositions[i] = GRID.WorldToGrid(this.transform.GetChild(i).position);
+        }
+        
+        UpdateGrid();
     }
 
     void Update() {
@@ -27,47 +42,31 @@ public class Tetromino : MonoBehaviour {
         // if left key is pressed
         if (Input.GetKeyDown(GAME_VARIABLES.moveLeft)) {
             // move left
-            Move(Vector2.left);
-            // check if current position is valid
-            if (CollisionAtPosition() == 0) {
-                // if so update the grid
-                UpdateGrid();
-            } else {
-                // if not move this piece back
-                Move(-Vector2.left);
-            }
+            Move(Vector2.left);           
         
         // if right key is pressed
         } else if (Input.GetKeyDown(GAME_VARIABLES.moveRight)) {
             // move right
             Move(Vector2.right);
-            // check if current position is valid
-            if (CollisionAtPosition() == 0) {
-                // if so update the grid
-                UpdateGrid();
-            } else {
-                // if not move back
-                Move(-Vector2.right);
-            }
         
         // if rotate key is pressed
         } else if (Input.GetKeyDown(GAME_VARIABLES.rotate)) {
             // rotate 90 deg clockwise
             Rotate();
-            // because CollisionAtPosition returns an int, this line will move the piece
-            // in the appropriate direction if it is colliding with a wall in an action
-            // known as a 'wall kick'.
-            // this allows the piece to always rotate but will push it back into play if it against a wall
-            Move(Vector2.left * CollisionAtPosition());
-        }
-    }
 
-    /// <summary>
-    /// set all the grid positions for the minos of this piece
-    /// </summary>
-    /// <param name="positions">a vector array containing the grid position of all minos</param>
-    public void SetMinoGridPositions(Vector2[] positions) {
-        minoGridPositions = positions;
+        } else if (Input.GetKeyDown(GAME_VARIABLES.drop) /*|| Time.time - timeSinceFall >= timeBetweenFalls*/) {
+            // move down
+            Move(Vector2.down);
+            // check if current position is valid
+            if (ValidPosition()) {
+                // if so update the grid
+                UpdateGrid();
+            } else {
+                enabled = false;
+            }
+
+            timeSinceFall = Time.time;
+        }
     }
 
     /// <summary>
@@ -76,13 +75,37 @@ public class Tetromino : MonoBehaviour {
     /// <param name="translation"></param>
     private void Move(Vector3 translation) {
         this.transform.position += translation;
+
+        // check if current position is valid
+        if (ValidPosition()) {
+            // if so update the grid
+            UpdateGrid();
+        } else {
+            // if not move this piece back
+            this.transform.position += -translation;
+        }
     }
 
     /// <summary>
     /// rotates the piece 90deg clockwise
+    /// if rotation causes a collision it performs a 'wall kick' to try keep the piece in play
     /// </summary>
     private void Rotate() {
         this.transform.Rotate(0, 0, 90);
+
+        // this code here tries to 'WALL KICK' to move the piece back into play
+        // if we try to rotate and collide with something, we try moving left and right to get the piece to fit
+        if (!ValidPosition()) {
+            this.transform.position += Vector3.left;
+            if (!ValidPosition()) {
+                this.transform.position += 2 * Vector3.right;
+                if (!ValidPosition()) {
+                    this.transform.position += Vector3.left;
+                }
+            }
+        }
+
+        UpdateGrid();
 
         // we do this additional rotation for each mino because the sprite uses lighting on the top and left sides
         // without this rotation, the 'lighting' changes when the object is rotated which does not look right
@@ -108,8 +131,8 @@ public class Tetromino : MonoBehaviour {
     /// <summary>
     /// checks collision for a piece at this position
     /// </summary>
-    /// <returns>-1 if left collision, 1 if right collision, 0 if no collision</returns>
-    private int CollisionAtPosition() {
+    /// <returns>-1 if left border collision, 1 if right collision, 0 if no collision, 2 if collisions with other blocks</returns>
+    private bool ValidPosition() {
         // get dimensions of the current grid
         Vector2 dimensions = GRID.GetDimensions();
 
@@ -118,31 +141,62 @@ public class Tetromino : MonoBehaviour {
             // calculate the grid position of this mino
             Vector2 minoGridPos = GRID.WorldToGrid(mino.position);
 
-            // check for left and right border collision
-            if (minoGridPos.x < 0) {
-                return -1;
-            } else if (minoGridPos.x >= dimensions.x) {
-                return 1;
+            if (minoGridPos.y < 0) {
+                Debug.Log("hit bottom!");
+                return false;
+            }
+
+            if (minoGridPos.x < 0 || minoGridPos.x >= dimensions.x) {
+                return false;
+            }
+
+
+            if (GRID.GetGridAt(minoGridPos) != null && GRID.GetGridAt(minoGridPos).parent != this.transform) {
+                Debug.Log("hit existing mino");
+                return false;
             }
         }
 
         // if return hasnt already been called, we haven't collided at all, so return 0
-        return 0;
+        return true;
     }
 
     /// <summary>
     /// clean up old occupied grid space and set new occupied space to true in the grid
     /// </summary>
     private void UpdateGrid() {
-        for(int i = 0; i < this.transform.childCount; i++) {
-            Vector2 minoGridPos = GRID.WorldToGrid(this.transform.GetChild(i).position);
+        // remove all old positions
+        for(int i = 0; i < minoGridPositions.Length; i++) {
+            GRID.SetGridAt(minoGridPositions[i], null);       
+        }
 
-            if (minoGridPositions != null) {
-                GRID.SetGridAt(minoGridPositions[i], false);
-                minoGridPositions[i] = minoGridPos;
+        // update to new positions
+        for (int i = 0; i < minoGridPositions.Length; i++) {
+            Transform currentMino = this.transform.GetChild(i);
+            Vector2 minoGridPos = GRID.WorldToGrid(currentMino.position);
+
+            minoGridPositions[i] = minoGridPos;
+
+            GRID.SetGridAt(minoGridPos, this.transform.GetChild(i));
+        }
+
+        DrawGrid();
+    }
+
+    private void DrawGrid() {
+        Vector2 dimensions = GRID.GetDimensions();
+        gridText.text = "";
+
+        for (int y = (int) dimensions.y - 1; y > -1; y--) {
+            for (int x = 0; x < dimensions.x; x++) {
+                if (GRID.GetGridAt(new Vector2(x, y)) != null) {
+                    gridText.text += "#";
+                } else {
+                    gridText.text += "e";
+                }
             }
-         
-            GRID.SetGridAt(minoGridPos, true);
+
+            gridText.text += '\n';
         }
     }
 }
