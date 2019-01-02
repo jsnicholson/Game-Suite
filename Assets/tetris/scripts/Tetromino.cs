@@ -54,18 +54,8 @@ public class Tetromino : MonoBehaviour {
             // rotate 90 deg clockwise
             Rotate();
 
-        } else if (Input.GetKeyDown(GAME_VARIABLES.drop) /*|| Time.time - timeSinceFall >= timeBetweenFalls*/) {
-            // move down
-            Move(Vector2.down);
-            // check if current position is valid
-            if (ValidPosition()) {
-                // if so update the grid
-                UpdateGrid();
-            } else {
-                enabled = false;
-            }
-
-            timeSinceFall = Time.time;
+        } else if (Input.GetKeyDown(GAME_VARIABLES.drop) || Time.time - timeSinceFall >= timeBetweenFalls) {
+            Fall();
         }
     }
 
@@ -96,10 +86,13 @@ public class Tetromino : MonoBehaviour {
         // this code here tries to 'WALL KICK' to move the piece back into play
         // if we try to rotate and collide with something, we try moving left and right to get the piece to fit
         if (!ValidPosition()) {
+            // try moving left
             this.transform.position += Vector3.left;
             if (!ValidPosition()) {
+                // if dont fit try moving right
                 this.transform.position += 2 * Vector3.right;
                 if (!ValidPosition()) {
+                    // cant wall kick
                     this.transform.position += Vector3.left;
                 }
             }
@@ -115,7 +108,17 @@ public class Tetromino : MonoBehaviour {
     }
 
     private void Fall() {
+        // move down
+        this.transform.position += Vector3.down;
+        // check if current position is valid
+        if (ValidPosition()) {
+            // if so update the grid
+            UpdateGrid();          
+        } else {
+            enabled = false;
+        }
 
+        timeSinceFall = Time.time;
     }
 
     /// <summary>
@@ -128,10 +131,6 @@ public class Tetromino : MonoBehaviour {
         return (vec.x + "," + vec.y);
     }
 
-    /// <summary>
-    /// checks collision for a piece at this position
-    /// </summary>
-    /// <returns>-1 if left border collision, 1 if right collision, 0 if no collision, 2 if collisions with other blocks</returns>
     private bool ValidPosition() {
         // get dimensions of the current grid
         Vector2 dimensions = GRID.GetDimensions();
@@ -142,7 +141,6 @@ public class Tetromino : MonoBehaviour {
             Vector2 minoGridPos = GRID.WorldToGrid(mino.position);
 
             if (minoGridPos.y < 0) {
-                Debug.Log("hit bottom!");
                 return false;
             }
 

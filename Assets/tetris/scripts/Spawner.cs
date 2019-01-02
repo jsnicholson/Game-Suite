@@ -21,11 +21,14 @@ public class Spawner : MonoBehaviour {
 
     private GameObject[] tetrominoList;
 
+    private GameGrid GRID;
+
     void Start() {
         tetrominoList = new GameObject[] { tetromino_i, tetromino_j , tetromino_l, tetromino_o,
                                             tetromino_s, tetromino_t, tetromino_z};
 
         Tetromino tetromino = Instantiate(tetromino_t, new Vector3(2.5f, 6.5f, 0), Quaternion.identity).GetComponent<Tetromino>();
+        GRID = GameObject.FindWithTag("GM").GetComponent<GameGrid>();
     }
 
     void SpawnTetromino() {
