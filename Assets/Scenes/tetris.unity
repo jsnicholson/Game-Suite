@@ -375,7 +375,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid: {fileID: 220959813}
-  spawner: {fileID: 0}
+  spawner: {fileID: 148773437}
 --- !u!114 &148773436
 MonoBehaviour:
   m_ObjectHideFlags: 0
