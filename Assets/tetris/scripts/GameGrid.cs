@@ -7,7 +7,7 @@ public class GameGrid : MonoBehaviour {
     private GameVariables GAME_VARIABLES;
     private Vector2 gridDimensions = new Vector2(10, 20);
 
-    private bool[,] arrGrid;
+    private Transform[,] arrGrid;
 
     void Awake() {
         GAME_VARIABLES = GameObject.FindWithTag("GM").GetComponent<GameVariables>();
@@ -15,7 +15,7 @@ public class GameGrid : MonoBehaviour {
     }
 
     void Start() {
-        arrGrid = new bool[(int) gridDimensions.y, (int) gridDimensions.x];
+        arrGrid = new Transform[(int) gridDimensions.y, (int) gridDimensions.x];
     }
 
     void OnDrawGizmos() {
@@ -34,20 +34,33 @@ public class GameGrid : MonoBehaviour {
     private void InitialiseGrid() {
         for(int j = 0; j < gridDimensions.y; j++) {
             for(int i = 0; i < gridDimensions.x; i++) {
-                arrGrid[j, i] = false;
+                arrGrid[j, i] = null;
             }
         }
     }
 
-    public bool[,] GetGrid() {
+    public Vector2 GetDimensions() {
+        return gridDimensions;
+    }
+
+    public Transform[,] GetGrid() {
         return arrGrid;
     }
 
-    public void SetGridAt(Vector2 pos, bool value) {
+    public Transform GetGridAt(Vector2 gridPos) {
+        return arrGrid[(int) gridPos.y, (int) gridPos.x];
+    }
+
+    public void SetGridAt(Vector2 pos, Transform value) {
         arrGrid[(int) pos.y,  (int) pos.x] = value;
     }
 
-    public static Vector2 ScreenToGrid(Vector2 screenVec) {
-        return new Vector2(Mathf.Floor(screenVec.x), Mathf.Floor(screenVec.y));
+    public static Vector2 FloorVec2(Vector2 vec) {
+        return new Vector2(Mathf.Floor(vec.x), Mathf.Floor(vec.y));
+    }
+
+    public Vector2 WorldToGrid(Vector2 screenVec) {
+        Vector2 relativePos = screenVec - (Vector2)this.transform.position;
+        return FloorVec2(relativePos);
     }
 }
