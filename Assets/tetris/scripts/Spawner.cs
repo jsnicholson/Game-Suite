@@ -44,7 +44,17 @@ public class Spawner : MonoBehaviour {
         SpawnTetromino();
     }
 
-    void SpawnTetromino() {
-        Tetromino tetromino = Instantiate(tetromino_t, spawnPointOffset, Quaternion.identity).GetComponent<Tetromino>();
+    public void SpawnTetromino() {
+        int currentTetrominoIndex = Random.Range(0, tetrominoList.Length - 1);
+        GameObject currentTetromino = tetrominoList[currentTetrominoIndex];
+        Vector3 spawnPoint;
+
+        if(currentTetrominoIndex == 0 || currentTetrominoIndex == 3) {
+            spawnPoint = spawnPointCentral;
+        } else {
+            spawnPoint = spawnPointOffset;
+        }
+
+        Tetromino tetromino = Instantiate(currentTetromino, spawnPoint, Quaternion.identity).GetComponent<Tetromino>();
     }
 }

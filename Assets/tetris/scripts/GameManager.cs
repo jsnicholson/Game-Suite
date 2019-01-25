@@ -8,6 +8,6 @@ public class GameManager : MonoBehaviour {
     public Spawner spawner;
 
     public void PieceLanded() {
-
+        spawner.SpawnTetromino();
     }
 }

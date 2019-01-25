@@ -11,9 +11,9 @@ public class Tetromino : MonoBehaviour {
 
     private Vector2[] minoGridPositions;
 
-    private float timeSinceFall = 0;
     // in seconds
     private float timeBetweenFalls = 1;
+    private float lastFallTime;
 
     public Text gridText;
 
@@ -28,6 +28,8 @@ public class Tetromino : MonoBehaviour {
             minoGridPositions[i] = GRID.WorldToGrid(this.transform.GetChild(i).position);
         }
         
+        lastFallTime = Time.time;
+
         UpdateGrid();
     }
 
@@ -58,7 +60,7 @@ public class Tetromino : MonoBehaviour {
             // rotate 90 deg clockwise
             Rotate();
 
-        } else if (Input.GetKeyDown(GAME_VARIABLES.drop) || Time.time - timeSinceFall >= timeBetweenFalls) {
+        } else if (Input.GetKeyDown(GAME_VARIABLES.drop) || Time.time - lastFallTime >= timeBetweenFalls) {
             Fall();
         }
     }
@@ -112,12 +114,12 @@ public class Tetromino : MonoBehaviour {
     private void Fall() {
         if (!Move(Vector3.down)) {
             Debug.Log("landed!");
-
+            GAME_MANAGER.PieceLanded();
             enabled = false;
         }
 
         UpdateGrid();
-        timeSinceFall = Time.time;
+        lastFallTime = Time.time;
     }
 
     /// <summary>
