@@ -21,17 +21,30 @@ public class Spawner : MonoBehaviour {
 
     private GameObject[] tetrominoList;
 
+    // used for tetrominos that have their pivot offset from any mino (ie. i, o)
+    private Vector3 spawnPointCentral;
+    // used for tetrominos that have their pivot at the centre of a mino (ie. j, l, s, t, z)
+    private Vector3 spawnPointOffset;
+
     private GameGrid GRID;
 
     void Start() {
         tetrominoList = new GameObject[] { tetromino_i, tetromino_j , tetromino_l, tetromino_o,
                                             tetromino_s, tetromino_t, tetromino_z};
 
-        Tetromino tetromino = Instantiate(tetromino_t, new Vector3(2.5f, 6.5f, 0), Quaternion.identity).GetComponent<Tetromino>();
-        GRID = GameObject.FindWithTag("GM").GetComponent<GameGrid>();
+        GRID = GameObject.FindWithTag("GM").GetComponent<GameManager>().grid;
+
+        Vector2 tempPoint = GRID.WorldToGrid(new Vector2(5f, 19f));
+        // used for tetrominos with a pivot offset from any mino (ie. i, o)
+        spawnPointCentral = new Vector3(tempPoint.x, tempPoint.y, 0);
+
+        // used for tetrominos with a pivot centred on a mino (ie. j, l, s, t, z)
+        spawnPointOffset = new Vector3(tempPoint.x - 0.5f, tempPoint.y - 0.5f, 0);
+
+        SpawnTetromino();
     }
 
     void SpawnTetromino() {
-
+        Tetromino tetromino = Instantiate(tetromino_t, spawnPointOffset, Quaternion.identity).GetComponent<Tetromino>();
     }
 }

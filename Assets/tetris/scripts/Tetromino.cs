@@ -42,12 +42,16 @@ public class Tetromino : MonoBehaviour {
         // if left key is pressed
         if (Input.GetKeyDown(GAME_VARIABLES.moveLeft)) {
             // move left
-            Move(Vector2.left);           
+            if (Move(Vector2.left)) {
+                UpdateGrid();
+            }           
         
         // if right key is pressed
         } else if (Input.GetKeyDown(GAME_VARIABLES.moveRight)) {
             // move right
-            Move(Vector2.right);
+            if (Move(Vector2.right)) {
+                UpdateGrid();
+            }
         
         // if rotate key is pressed
         } else if (Input.GetKeyDown(GAME_VARIABLES.rotate)) {
@@ -63,16 +67,17 @@ public class Tetromino : MonoBehaviour {
     /// move this piece by the translation given
     /// </summary>
     /// <param name="translation"></param>
-    private void Move(Vector3 translation) {
+    private bool Move(Vector3 translation) {
         this.transform.position += translation;
 
         // check if current position is valid
         if (ValidPosition()) {
             // if so update the grid
-            UpdateGrid();
+            return true;
         } else {
             // if not move this piece back
             this.transform.position += -translation;
+            return false;
         }
     }
 
@@ -81,43 +86,37 @@ public class Tetromino : MonoBehaviour {
     /// if rotation causes a collision it performs a 'wall kick' to try keep the piece in play
     /// </summary>
     private void Rotate() {
+        bool rotated = false;
+
         this.transform.Rotate(0, 0, 90);
 
-        // this code here tries to 'WALL KICK' to move the piece back into play
-        // if we try to rotate and collide with something, we try moving left and right to get the piece to fit
-        if (!ValidPosition()) {
-            // try moving left
-            this.transform.position += Vector3.left;
-            if (!ValidPosition()) {
-                // if dont fit try moving right
-                this.transform.position += 2 * Vector3.right;
-                if (!ValidPosition()) {
-                    // cant wall kick
-                    this.transform.position += Vector3.left;
-                }
+        if (ValidPosition()) {
+            rotated = true;
+        } else {
+            if (Move(Vector3.left) || Move(Vector3.right) || Move(Vector3.up)) {
+                rotated = true;
             }
         }
 
-        UpdateGrid();
+        if (rotated) {
+            UpdateGrid();
 
-        // we do this additional rotation for each mino because the sprite uses lighting on the top and left sides
-        // without this rotation, the 'lighting' changes when the object is rotated which does not look right
-        foreach (Transform mino in this.transform) {
-            mino.Rotate(0, 0, -90);
+            // we do this additional rotation for each mino because the sprite uses lighting on the top and left sides
+            // without this rotation, the 'lighting' changes when the object is rotated which does not look right
+            foreach (Transform mino in this.transform) {
+                mino.Rotate(0, 0, -90);
+            }
         }
     }
 
     private void Fall() {
-        // move down
-        this.transform.position += Vector3.down;
-        // check if current position is valid
-        if (ValidPosition()) {
-            // if so update the grid
-            UpdateGrid();          
-        } else {
+        if (!Move(Vector3.down)) {
+            Debug.Log("landed!");
+
             enabled = false;
         }
 
+        UpdateGrid();
         timeSinceFall = Time.time;
     }
 
@@ -131,6 +130,19 @@ public class Tetromino : MonoBehaviour {
         return (vec.x + "," + vec.y);
     }
 
+    /// <summary>
+    /// determines whether  a given position is within the grid
+    /// </summary>
+    /// <param name="pos">vector2 as grid position</param>
+    /// <returns>true if in grid, false if not</returns>
+    private bool InGrid(Vector2 pos) {
+        if (pos.y < 0 || pos.x < 0 || pos.x >= GRID.GetDimensions().x) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     private bool ValidPosition() {
         // get dimensions of the current grid
         Vector2 dimensions = GRID.GetDimensions();
@@ -140,14 +152,9 @@ public class Tetromino : MonoBehaviour {
             // calculate the grid position of this mino
             Vector2 minoGridPos = GRID.WorldToGrid(mino.position);
 
-            if (minoGridPos.y < 0) {
+            if (!InGrid(minoGridPos)) {
                 return false;
             }
-
-            if (minoGridPos.x < 0 || minoGridPos.x >= dimensions.x) {
-                return false;
-            }
-
 
             if (GRID.GetGridAt(minoGridPos) != null && GRID.GetGridAt(minoGridPos).parent != this.transform) {
                 Debug.Log("hit existing mino");
