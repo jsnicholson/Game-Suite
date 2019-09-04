@@ -9,5 +9,10 @@ public class GameManager : MonoBehaviour {
 
     public void PieceLanded() {
         spawner.SpawnTetromino();
+        ClearLines();
+    }
+
+    private void ClearLines() {
+
     }
 }

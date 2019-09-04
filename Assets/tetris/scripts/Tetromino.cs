@@ -12,8 +12,12 @@ public class Tetromino : MonoBehaviour {
     private Vector2[] minoGridPositions;
 
     // in seconds
-    private float timeBetweenFalls = 1;
+    private float timeBetweenFalls = 1.0f;
     private float lastFallTime;
+
+    private float timeTillFastDrop = 0.5f;
+    private float timeBetweenFastFall = 0.05f;
+    private float pressTime;
 
     public Text gridText;
 
@@ -46,21 +50,26 @@ public class Tetromino : MonoBehaviour {
             // move left
             if (Move(Vector2.left)) {
                 UpdateGrid();
-            }           
-        
+            }
+
         // if right key is pressed
         } else if (Input.GetKeyDown(GAME_VARIABLES.moveRight)) {
             // move right
             if (Move(Vector2.right)) {
                 UpdateGrid();
             }
-        
+        }
+
         // if rotate key is pressed
-        } else if (Input.GetKeyDown(GAME_VARIABLES.rotate)) {
+        if (Input.GetKeyDown(GAME_VARIABLES.rotate)) {
             // rotate 90 deg clockwise
             Rotate();
+        }
 
-        } else if (Input.GetKeyDown(GAME_VARIABLES.drop) || Time.time - lastFallTime >= timeBetweenFalls) {
+        if (Input.GetKeyDown(GAME_VARIABLES.drop) || Time.time - lastFallTime >= timeBetweenFalls) {
+            Fall();
+            pressTime = Time.time;
+        } else if (Input.GetKey(GAME_VARIABLES.drop) && (Time.time - pressTime >= timeTillFastDrop) && (Time.time - lastFallTime >= timeBetweenFastFall))  {
             Fall();
         }
     }
