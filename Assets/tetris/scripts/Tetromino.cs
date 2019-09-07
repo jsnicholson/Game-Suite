@@ -87,7 +87,7 @@ public class Tetromino : MonoBehaviour {
             return true;
         } else {
             // if not move this piece back
-            this.transform.position += -translation;
+            this.transform.position -= translation;
             return false;
         }
     }
