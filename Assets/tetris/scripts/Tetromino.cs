@@ -122,7 +122,6 @@ public class Tetromino : MonoBehaviour {
 
     private void Fall() {
         if (!Move(Vector3.down)) {
-            Debug.Log("landed!");
             GAME_MANAGER.PieceLanded();
             enabled = false;
         }
@@ -142,7 +141,7 @@ public class Tetromino : MonoBehaviour {
     }
 
     /// <summary>
-    /// determines whether  a given position is within the grid
+    /// determines whether a given position is within the grid
     /// </summary>
     /// <param name="pos">vector2 as grid position</param>
     /// <returns>true if in grid, false if not</returns>
@@ -155,9 +154,6 @@ public class Tetromino : MonoBehaviour {
     }
 
     private bool ValidPosition() {
-        // get dimensions of the current grid
-        Vector2 dimensions = GRID.GetDimensions();
-
         // loop for each mino within this tetromino
         foreach (Transform mino in this.transform) {
             // calculate the grid position of this mino
