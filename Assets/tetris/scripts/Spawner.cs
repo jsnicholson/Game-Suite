@@ -55,6 +55,6 @@ public class Spawner : MonoBehaviour {
             spawnPoint = spawnPointOffset;
         }
 
-        Tetromino tetromino = Instantiate(currentTetromino, spawnPoint, Quaternion.identity).GetComponent<Tetromino>();
+        Instantiate(currentTetromino, spawnPoint, Quaternion.identity).GetComponent<Tetromino>();
     }
 }
