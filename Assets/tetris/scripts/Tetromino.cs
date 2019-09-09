@@ -163,7 +163,7 @@ public class Tetromino : MonoBehaviour {
                 return false;
             }
 
-            if (GRID.GetGridAt(minoGridPos) != null && GRID.GetGridAt(minoGridPos).parent != this.transform) {
+            if (GRID.GetGridAt(minoGridPos) != null && GRID.GetGridAt(minoGridPos).transform.parent != this.transform) {
                 Debug.Log("hit existing mino");
                 return false;
             }
@@ -189,7 +189,7 @@ public class Tetromino : MonoBehaviour {
 
             minoGridPositions[i] = minoGridPos;
 
-            GRID.SetGridAt(minoGridPos, this.transform.GetChild(i));
+            GRID.SetGridAt(minoGridPos, this.transform.GetChild(i).gameObject);
         }
 
         DrawGrid();
