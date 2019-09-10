@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -128,16 +128,6 @@ public class Tetromino : MonoBehaviour {
 
         UpdateGrid();
         lastFallTime = Time.time;
-    }
-
-    /// <summary>
-    /// returns the vector in the format "x,y"
-    /// makes it easier to print vectors in debugging
-    /// </summary>
-    /// <param name="vec">the vector to print</param>
-    /// <returns>string "x,y"</returns>
-    private string VecToString(Vector2 vec) {
-        return (vec.x + "," + vec.y);
     }
 
     /// <summary>
