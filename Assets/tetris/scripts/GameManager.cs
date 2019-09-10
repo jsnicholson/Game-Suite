@@ -81,7 +81,6 @@ public class GameManager : MonoBehaviour {
                         grid.SetGridAt(new Vector2(i, j - 1), obj_mino);
                         // remove from previous location
                         grid.SetGridAt(new Vector2(i, j), null);
-                        Debug.Log("moved mino from " + i + "|" + j + " to " + i + "|" + (j-1));
 
                         // unity is a pain
                         Vector3 vec_objPosition = obj_mino.transform.position;
