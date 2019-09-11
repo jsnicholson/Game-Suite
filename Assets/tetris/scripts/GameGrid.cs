@@ -7,7 +7,7 @@ public class GameGrid : MonoBehaviour {
     private GameVariables GAME_VARIABLES;
     private Vector2 gridDimensions = new Vector2(10, 20);
 
-    private Transform[,] arrGrid;
+    private GameObject[,] arrGrid;
 
     void Awake() {
         GAME_VARIABLES = GameObject.FindWithTag("GM").GetComponent<GameVariables>();
@@ -15,7 +15,7 @@ public class GameGrid : MonoBehaviour {
     }
 
     void Start() {
-        arrGrid = new Transform[(int) gridDimensions.y, (int) gridDimensions.x];
+        arrGrid = new GameObject[(int) gridDimensions.y, (int) gridDimensions.x];
     }
 
     void OnDrawGizmos() {
@@ -43,15 +43,15 @@ public class GameGrid : MonoBehaviour {
         return gridDimensions;
     }
 
-    public Transform[,] GetGrid() {
+    public GameObject[,] GetGrid() {
         return arrGrid;
     }
 
-    public Transform GetGridAt(Vector2 gridPos) {
+    public GameObject GetGridAt(Vector2 gridPos) {
         return arrGrid[(int) gridPos.y, (int) gridPos.x];
     }
 
-    public void SetGridAt(Vector2 pos, Transform value) {
+    public void SetGridAt(Vector2 pos, GameObject value) {
         arrGrid[(int) pos.y,  (int) pos.x] = value;
     }
 

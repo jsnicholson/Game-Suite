@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -131,16 +131,6 @@ public class Tetromino : MonoBehaviour {
     }
 
     /// <summary>
-    /// returns the vector in the format "x,y"
-    /// makes it easier to print vectors in debugging
-    /// </summary>
-    /// <param name="vec">the vector to print</param>
-    /// <returns>string "x,y"</returns>
-    private string VecToString(Vector2 vec) {
-        return (vec.x + "," + vec.y);
-    }
-
-    /// <summary>
     /// determines whether a given position is within the grid
     /// </summary>
     /// <param name="pos">vector2 as grid position</param>
@@ -163,7 +153,7 @@ public class Tetromino : MonoBehaviour {
                 return false;
             }
 
-            if (GRID.GetGridAt(minoGridPos) != null && GRID.GetGridAt(minoGridPos).parent != this.transform) {
+            if (GRID.GetGridAt(minoGridPos) != null && GRID.GetGridAt(minoGridPos).transform.parent != this.transform) {
                 Debug.Log("hit existing mino");
                 return false;
             }
@@ -189,7 +179,7 @@ public class Tetromino : MonoBehaviour {
 
             minoGridPositions[i] = minoGridPos;
 
-            GRID.SetGridAt(minoGridPos, this.transform.GetChild(i));
+            GRID.SetGridAt(minoGridPos, this.transform.GetChild(i).gameObject);
         }
 
         DrawGrid();
