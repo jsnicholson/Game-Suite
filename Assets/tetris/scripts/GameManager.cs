@@ -78,13 +78,13 @@ public class GameManager : MonoBehaviour {
                     // if a mino is there
                     if(obj_mino != null) {
                         // reference it in the row below
-                        grid.SetGridAt(new Vector2(i, j - 1), obj_mino);
+                        grid.SetGridAt(new Vector2(i, j - lint_linesToClear.Count), obj_mino);
                         // remove from previous location
                         grid.SetGridAt(new Vector2(i, j), null);
 
                         // unity is a pain
                         Vector3 vec_objPosition = obj_mino.transform.position;
-                        vec_objPosition.y -= 1;
+                        vec_objPosition.y -= lint_linesToClear.Count;
                         obj_mino.transform.position = vec_objPosition;
                     }
                 }
