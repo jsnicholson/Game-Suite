@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class Vector2Util { 
+public static class Vector2Math {
+
+    public static Vector2 RoundVec2(Vector2 vec) {
+        return new Vector2(Mathf.Floor(vec.x), Mathf.Floor(vec.y));
+    }
 
     public static Vector2 RotateAround(Vector2 pivot, Vector2 point, float angle) {
         float s = Mathf.Sin(angle * Mathf.Deg2Rad);

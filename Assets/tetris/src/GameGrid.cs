@@ -64,10 +64,6 @@ public class GameGrid : MonoBehaviour {
         arrGrid[(int) pos.y,  (int) pos.x] = value;
     }
 
-    public static Vector2 FloorVec2(Vector2 vec) {
-        return new Vector2(Mathf.Floor(vec.x), Mathf.Floor(vec.y));
-    }
-
     /// <summary>
     /// converts from world space to grid space
     /// </summary>
@@ -76,7 +72,7 @@ public class GameGrid : MonoBehaviour {
     public Vector2 WorldToGrid(Vector2 worldPos) {
         // explicitly cast to Vector2 as dealing with 2D grid
         Vector2 relativePos = worldPos - (Vector2)this.transform.position;
-        return FloorVec2(relativePos);
+        return Vector2Math.RoundVec2(relativePos);
     }
 
     /// <summary>
