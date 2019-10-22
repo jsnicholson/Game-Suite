@@ -38,7 +38,7 @@ public class Tetromino : MonoBehaviour {
 
         m_lastFallTime = Time.time;
 
-        UpdateCurrentGrid();
+        UpdateGridPosition();
     }
 
     public void Update() {
@@ -53,14 +53,14 @@ public class Tetromino : MonoBehaviour {
         if (Input.GetKeyDown(m_gameVariables.moveLeft)) {
             // move left
             if (Move(Vector2.left)) {
-                UpdateCurrentGrid();
+                UpdateGridPosition();
             }
 
         // if right key is pressed
         } else if (Input.GetKeyDown(m_gameVariables.moveRight)) {
             // move right
             if (Move(Vector2.right)) {
-                UpdateCurrentGrid();
+                UpdateGridPosition();
             }
         }
 
@@ -115,7 +115,7 @@ public class Tetromino : MonoBehaviour {
         }
 
         if (rotated) {
-            UpdateCurrentGrid();
+            UpdateGridPosition();
 
             // we do this additional rotation for each mino because the sprite uses lighting on the top and left sides
             // without this rotation, the 'lighting' changes when the object is rotated which does not look right
@@ -133,7 +133,7 @@ public class Tetromino : MonoBehaviour {
             enabled = false;
         }
 
-        UpdateCurrentGrid();
+        UpdateGridPosition();
         m_lastFallTime = Time.time;
     }
 
@@ -160,7 +160,7 @@ public class Tetromino : MonoBehaviour {
     /// <summary>
     /// clean up old occupied grid space and set new occupied space to true in the grid
     /// </summary>
-    private void UpdateCurrentGrid() {
+    private void UpdateGridPosition() {
         // remove all old positions
         for(int i = 0; i < m_minoGridPositions.Length; i++) {
             m_gameGrid.SetGridAt(m_minoGridPositions[i], null);       
