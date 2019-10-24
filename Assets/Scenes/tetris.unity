@@ -375,8 +375,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f302637bad292549b010a60456417e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grid: {fileID: 220959813}
-  spawner: {fileID: 148773437}
   audio_lineClear: {fileID: 8300000, guid: 513ec215c81554145bf5a4b0bfa67e54, type: 3}
 --- !u!114 &148773436
 MonoBehaviour:
@@ -389,7 +387,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d75f4f321336424ba542b9c201beb6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridDimensions: {x: 10, y: 20}
   moveLeft: 276
   moveRight: 275
   rotate: 273
@@ -1301,8 +1298,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -144.3, y: -8.27}
-  m_SizeDelta: {x: 160, y: 376.42}
+  m_AnchoredPosition: {x: -128.83, y: 9.91}
+  m_SizeDelta: {x: 213.58, y: 403.72}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &463470496
 MonoBehaviour:
@@ -1325,10 +1322,10 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 49cebc8dbbc09c547800b43bf188f6a2, type: 3}
-    m_FontSize: 14
+    m_FontSize: 12
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 1
     m_MaxSize: 40
     m_Alignment: 0
     m_AlignByGeometry: 0
