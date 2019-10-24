@@ -26,7 +26,7 @@ public class Tetromino : MonoBehaviour {
     /// <param name="_manager"></param>
     /// <param name="_variables"></param>
     /// <param name="_grid"></param>
-    public void Initialise(GameManager _manager, GameVariables _variables, GameGrid _grid) {
+    public void Initialise(GameManager _manager, GameVariables _variables, TetrisGrid _grid) {
         m_gameManager = _manager;
         m_gameVariables = _variables;
         m_gameGrid = _grid;
