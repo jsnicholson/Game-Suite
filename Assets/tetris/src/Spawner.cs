@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,7 +28,7 @@ public class Spawner : MonoBehaviour {
 
     private GameManager m_gameManager;
     private GameVariables m_gameVariables;
-    private GameGrid m_gameGrid;
+    private TetrisGrid m_gameGrid;
 
 // ===== CONSTRUCTOR
     public void Initialise(GameManager _manager) {

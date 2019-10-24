@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour {
 
 // ===== PRIVATE MEMBERS =====
     private GameVariables m_variables;
-    private GameGrid m_grid;
+    private TetrisGrid m_grid;
     private Spawner m_spawner;
 
     private AudioSource m_audioSource;
@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour {
 // ===== CONSTRUCTOR =====
     public void Initialise() {
         m_variables = GetComponent<GameVariables>();
-        m_grid = GameObject.Find("Grid").GetComponent<GameGrid>();
+        m_grid = GameObject.Find("Grid").GetComponent<TetrisGrid>();
         m_grid.Initialise(this);
         m_spawner = GetComponent<Spawner>();
         m_spawner.Initialise(this);
@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour {
         return m_variables;
     }
 
-    public GameGrid GetGrid() {
+    public TetrisGrid GetGrid() {
         return m_grid;
     }
 

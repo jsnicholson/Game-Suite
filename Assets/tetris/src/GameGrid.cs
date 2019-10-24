@@ -1,20 +1,21 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Assertions;
 
 public class GameGrid : MonoBehaviour {
 
     private GameVariables m_gameVariables;
-    private readonly Vector2 m_gridDimensions = new Vector2(10, 22);
+    protected readonly Vector2 m_gridDimensions = new Vector2(10, 22);
 
-    private GameObject[,] arrGrid;
+    protected GameObject[,] arrGrid;
 
     // DEBUG
     private Text m_gridText;
 
 // ===== CALLED BY UNITY =====
-    public void OnDrawGizmos() {
+    public virtual void OnDrawGizmos() {
         Gizmos.color = Color.black;
         for (int i = 0; i <= m_gridDimensions.x; i++) {
             Gizmos.DrawLine(new Vector3(transform.position.x + i, transform.position.y, transform.position.z),
@@ -38,8 +39,8 @@ public class GameGrid : MonoBehaviour {
         m_gridText = GameObject.Find("Text").GetComponent<Text>();
     }
 
-// ===== PRIVATE =====
-    private void InitialiseGrid() {
+// ===== PROTECTED =====
+    protected void InitialiseGrid() {
         for(int j = 0; j < m_gridDimensions.y; j++) {
             for(int i = 0; i < m_gridDimensions.x; i++) {
                 arrGrid[j, i] = null;
@@ -106,68 +107,6 @@ public class GameGrid : MonoBehaviour {
 
             m_gridText.text += '\n';
         }
-    }
-
-    /// <summary>
-    /// if the any lines are full then remove them
-    /// </summary>
-    public bool ClearLines() {
-        // list of line to clear
-        List<int> lint_linesToClear = new List<int>();
-        bool b_anyCleared = false;
-
-        // loop over grid
-        for (int j = 0; j < m_gridDimensions.y; j++) {
-            // assume line is full
-            bool b_lineFull = true;
-            for (int i = 0; i < m_gridDimensions.x; i++) {
-                // if grid at x,y is null, then line is not full
-                if (GetGridAt(new Vector2(i, j)) == null)
-                    b_lineFull = false;
-            }
-
-            // if line was full
-            if (b_lineFull) {
-                Debug.Log("Line full");
-                // add line to list to be cleared
-                lint_linesToClear.Add(j);
-                // flag
-                b_anyCleared = true;
-            }
-        }
-
-        if (b_anyCleared) {
-            // remove bottom line
-            foreach (int line in lint_linesToClear) {
-                for (int i = 0; i < m_gridDimensions.x; i++) {
-                    Destroy(GetGridAt(new Vector2(i, line)));
-                    SetGridAt(new Vector2(i, line), null);
-                }
-            }
-
-            // move all other minos down
-            // start from second row up
-            for (int j = 1; j < m_gridDimensions.y; j++) {
-                for (int i = 0; i < m_gridDimensions.x; i++) {
-                    // get obj at pos
-                    GameObject obj_mino = GetGridAt(new Vector2(i, j));
-                    // if a mino is there
-                    if (obj_mino != null) {
-                        // reference it in the row below
-                        SetGridAt(new Vector2(i, j - lint_linesToClear.Count), obj_mino);
-                        // remove from previous location
-                        SetGridAt(new Vector2(i, j), null);
-
-                        // unity is a pain
-                        Vector3 vec_objPosition = obj_mino.transform.position;
-                        vec_objPosition.y -= lint_linesToClear.Count;
-                        obj_mino.transform.position = vec_objPosition;
-                    }
-                }
-            }
-        }
-
-        return b_anyCleared;
     }
 
 } // ~GameGrid
