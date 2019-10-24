@@ -132,9 +132,10 @@ public class Tetromino : MonoBehaviour {
             m_gameManager.PieceLanded();
             enabled = false;
         }
-
-        UpdateGridPosition();
-        m_lastFallTime = Time.time;
+        else {
+            UpdateGridPosition();
+            m_lastFallTime = Time.time;
+        }  
     }
 
     private bool ValidPosition() {
