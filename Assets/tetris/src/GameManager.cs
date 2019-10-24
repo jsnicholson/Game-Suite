@@ -46,13 +46,10 @@ public class GameManager : MonoBehaviour {
     }
 
     public void PieceLanded() {
-        /*
+
         bool bAnyCleared = m_grid.ClearLines();
-        // play sound
-        if(bAnyCleared) {
-            m_audioSource.clip = audio_lineClear;
-            m_audioSource.Play();
-        }*/
+        if (bAnyCleared)
+            Debug.Log("line cleared!");
 
         m_spawner.SpawnTetromino(); 
     }

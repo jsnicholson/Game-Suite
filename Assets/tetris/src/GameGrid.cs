@@ -131,7 +131,7 @@ public class GameGrid : MonoBehaviour {
                 if (GetGridAt(new Vector2(x, y)) != null) {
                     m_gridText.text += "#";
                 } else {
-                    m_gridText.text += "e";
+                    m_gridText.text += ".";
                 }
             }
 
