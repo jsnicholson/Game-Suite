@@ -57,8 +57,16 @@ public class GameGrid : MonoBehaviour {
         return arrGrid;
     }
 
+    public GameObject GetGridAt(int x, int y) {
+        return arrGrid[y, x];
+    }
+
     public GameObject GetGridAt(Vector2 gridPos) {
         return arrGrid[(int) gridPos.y, (int) gridPos.x];
+    }
+
+    public void SetGridAt(int x, int y, GameObject value) {
+        arrGrid[y, x] = value;
     }
 
     public void SetGridAt(Vector2 pos, GameObject value) {
@@ -74,6 +82,28 @@ public class GameGrid : MonoBehaviour {
         // explicitly cast to Vector2 as dealing with 2D grid
         Vector2 relativePos = worldPos - (Vector2)this.transform.position;
         return Vector2Math.RoundVec2(relativePos);
+    }
+
+    public Vector2 WorldToGrid(Vector3 worldPos) {
+        Vector3 relativePos = worldPos - this.transform.position;
+        return Vector2Math.RoundVec2((Vector2)relativePos);
+    }
+
+    public Vector3 GridToWorld(Vector2 gridPos) {
+        return this.transform.position + new Vector3(gridPos.x, gridPos.y, 0);
+    }
+
+    /// <summary>
+    /// determines whether a given position is within the grid
+    /// </summary>
+    /// <param name="pos">point to check</param>
+    /// <returns>true if in grid, false if not</returns>
+    public bool InGrid(int x, int y) {
+        if (y < 0 || x < 0 || x >= m_gridDimensions.x) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /// <summary>
