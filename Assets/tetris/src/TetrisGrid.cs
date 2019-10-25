@@ -21,6 +21,8 @@ public class TetrisGrid : GameGrid {
                 RemoveLine(y);
                 ReduceLinesAbove(y);
                 b_anyCleared = true;
+                // decrement so we check this line again now that lines have been moved down
+                --y;
             }
         }
 
