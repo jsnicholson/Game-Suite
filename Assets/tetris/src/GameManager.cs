@@ -48,8 +48,10 @@ public class GameManager : MonoBehaviour {
         return m_spawner;
     }
 
-    public void PieceLanded() {
-
+    /// <summary>
+    /// listens for PieceLanded event
+    /// </summary>
+    private void PieceLanded() {
         bool bAnyCleared = m_grid.ClearLines();
         if (bAnyCleared)
             Debug.Log("line cleared!");
