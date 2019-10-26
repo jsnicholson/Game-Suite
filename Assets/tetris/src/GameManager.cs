@@ -52,11 +52,45 @@ public class GameManager : MonoBehaviour {
     /// listens for PieceLanded event
     /// </summary>
     private void PieceLanded() {
+        // tell the grid to attempt to clear lines
         bool bAnyCleared = m_grid.ClearLines();
+
         if (bAnyCleared)
             Debug.Log("line cleared!");
 
+        // spawn a new tetromino
         m_spawner.SpawnTetromino(); 
+    }
+
+    private void GameOver() {
+        // disable spawner
+        m_spawner.enabled = false;
+
+        // get all tetrominos still in level
+        Tetromino[] arr_remainingMinos = FindObjectsOfType<Tetromino>();
+        
+        // start adding rigidbodies
+        StartCoroutine(AddRigidbodies(arr_remainingMinos));
+        StopCoroutine("AddRigidbodies");
+    }
+
+    /// <summary>
+    /// adds a Rigidbody2D to each remaining mino and fires upward with random angle
+    /// </summary>
+    /// <param name="arr_t"></param>
+    /// <returns></returns>
+    IEnumerator AddRigidbodies(Tetromino[] arr_t) {
+        foreach(Tetromino t in arr_t) {
+            t.enabled = false;
+
+            foreach(Transform o in t.gameObject.transform) {
+                Rigidbody2D rb = o.gameObject.AddComponent<Rigidbody2D>();
+                rb.AddForce(Vector2.up * Random.Range(100, 200));
+                rb.AddForce(Vector2.right * Random.Range(-100, 100));
+            }
+           
+            yield return new WaitForSeconds(0.05f);
+        }
     }
 
 } // ~GameManager
