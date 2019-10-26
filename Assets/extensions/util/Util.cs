@@ -8,7 +8,14 @@ public static class Vector2Math {
         return new Vector2(Mathf.Floor(vec.x), Mathf.Floor(vec.y));
     }
 
-    public static Vector2 RotateAround(Vector2 pivot, Vector2 point, float angle) {
+    /// <summary>
+    /// rotate point around pivot by angle
+    /// </summary>
+    /// <param name="point"></param>
+    /// <param name="pivot"></param>
+    /// <param name="angle"></param>
+    /// <returns></returns>
+    public static Vector2 RotateAround(Vector2 point, Vector2 pivot, float angle) {
         float s = Mathf.Sin(angle * Mathf.Deg2Rad);
         float c = Mathf.Sin(angle * Mathf.Deg2Rad);
 

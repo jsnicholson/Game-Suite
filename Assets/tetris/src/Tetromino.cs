@@ -27,10 +27,12 @@ public class Tetromino : MonoBehaviour {
     /// <param name="_variables"></param>
     /// <param name="_grid"></param>
     public void Initialise(GameManager _manager, GameVariables _variables, TetrisGrid _grid) {
+        // assign constructor values
         m_gameManager = _manager;
         m_gameVariables = _variables;
         m_gameGrid = _grid;
 
+        // set out local mino grid positions
         m_minoGridPositions = new Vector2[this.transform.childCount];
         for (int i = 0; i < m_minoGridPositions.Length; i++) {
             m_minoGridPositions[i] = m_gameGrid.WorldToGrid(this.transform.GetChild(i).position);
@@ -51,6 +53,7 @@ public class Tetromino : MonoBehaviour {
         CheckForInput();
     }
 
+// ===== PRIVATE =====
     /// <summary>
     /// check for any player input
     /// </summary>
@@ -84,7 +87,6 @@ public class Tetromino : MonoBehaviour {
         }
     }
 
-// ===== PRIVATE =====
     /// <summary>
     /// move this piece by the translation given
     /// </summary>
