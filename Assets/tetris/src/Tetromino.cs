@@ -129,7 +129,8 @@ public class Tetromino : MonoBehaviour {
 
     private void Fall() {
         if (!Move(Vector3.down)) {
-            m_gameManager.PieceLanded();
+           // m_gameManager.PieceLanded();
+            TetrisEvents.e_PieceLanded.Invoke();
             enabled = false;
         }
         else {

@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour {
         m_spawner.Initialise(this);
 
         m_audioSource = GetComponent<AudioSource>();
+        TetrisEvents.e_PieceLanded.AddListener(PieceLanded);
     }
 
 // ===== PUBLIC =====
