@@ -38,6 +38,12 @@ public class Tetromino : MonoBehaviour {
 
         m_lastFallTime = Time.time;
 
+        // check that we can actually spawn here
+        // if not, the grid is full and its game over
+        if (!ValidPosition()) {
+            TetrisEvents.e_GameOver.Invoke();
+        }
+
         UpdateGridPosition();
     }
 
